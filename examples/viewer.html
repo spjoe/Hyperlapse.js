@@ -5,6 +5,8 @@
 	<title>Viewer Example</title> 
 
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script> 
+	<script src="js/canvas-toBlob.js"></script>
+	<script src="js/FileSaver.js"></script>
 	<script src="js/dat.gui.min.js"></script>
 	<script src="js/three.min.js"></script>
 	<script src="js/GSVPano.js"></script>
@@ -379,6 +381,7 @@
 			play_controls.add(hyperlapse, 'pause');
 			play_controls.add(hyperlapse, 'next');
 			play_controls.add(hyperlapse, 'prev');
+			play_controls.add(hyperlapse, 'record');
 			play_controls.open();
 
 			gui.add(o, 'drop_pins');

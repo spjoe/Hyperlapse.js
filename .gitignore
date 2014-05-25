@@ -3,6 +3,7 @@
 ._*
 .Spotlight-V100
 .Trashes
+*~
 
 examples/tool.html
 examples/ransac.html

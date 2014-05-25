@@ -29,6 +29,13 @@ var pointOnLine = function(t, a, b) {
 	return new google.maps.LatLng(x.toDeg(), y.toDeg());
 };
 
+var generateGuid = function (){
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+		return v.toString(16);
+	});
+};
+
 /**
  * @class
  * @classdesc Value object for a single point in a Hyperlapse sequence.
@@ -190,7 +197,7 @@ var Hyperlapse = function(container, params) {
     }
   };
 
-  _renderer = isWebGL() ? new THREE.WebGLRenderer() : new THREE.CanvasRenderer();
+	_renderer = isWebGL() ? new THREE.WebGLRenderer({preserveDrawingBuffer: true}) : new THREE.CanvasRenderer();
 	_renderer.autoClearColor = false;
 	_renderer.setSize( _w, _h );
 
@@ -790,4 +797,24 @@ var Hyperlapse = function(container, params) {
 			drawMaterial();
 		}
 	};
+
+	/**
+	 * Display all frames from start to end and save them as images on the client
+	 * @fires Hyperlapse#onFrame
+	 */
+	this.record = function() {
+		self.pause();
+		self.setSize(1920,1080);
+
+		var recording_uuid = generateGuid();
+
+		for(var i = 0; i < _h_points.length; i++){
+			_point_index = i;
+			drawMaterial();
+			render();
+			_renderer.domElement.toBlob(function(blob) {
+				saveAs(blob, "HyperlapseSequence_" + recording_uuid + "_" + i + ".png")
+			});
+		}
+	}
 };
